@@ -2,6 +2,7 @@ import { Console } from '@woowacourse/mission-utils';
 import MONTHS from '../constants/months.js';
 import DAYS from '../constants/days.js';
 import HOLIDAYS from '../constants/holidays.js';
+import findHolidays from '../utils/\bfindHolidays.js';
 
 function findMonthDays(selectedMonth) {
   const selectedMonthToNumber = parseInt(selectedMonth, 10);
@@ -13,19 +14,19 @@ function findMonthDays(selectedMonth) {
   return -1;
 }
 
-function findHolidays(selectedMonth) {
-  const selectedMonthToNumber = parseInt(selectedMonth, 10);
-  const holidayInfo = Object.values(HOLIDAYS).find(month => month[0].month === selectedMonthToNumber);
+// function findHolidays(selectedMonth) {
+//   const selectedMonthToNumber = parseInt(selectedMonth, 10);
+//   const holidayInfo = Object.values(HOLIDAYS).find(month => month[0].month === selectedMonthToNumber);
 
-  let holidays = [];
+//   let holidays = [];
 
-  if (holidayInfo[0] && holidayInfo[0].hasOwnProperty('day')) {
-    const dayValues = holidayInfo.map(holiday => holiday.day);
-    holidays = [...dayValues];
-  }
+//   if (holidayInfo[0] && holidayInfo[0].hasOwnProperty('day')) {
+//     const dayValues = holidayInfo.map(holiday => holiday.day);
+//     holidays = [...dayValues];
+//   }
 
-  return holidays;
-}
+//   return holidays;
+// }
 
 export default function workTableGenerate(monthAndDay, weekdayWorkers, holidayWorkers) {
   const workTable = [];
@@ -67,6 +68,17 @@ export default function workTableGenerate(monthAndDay, weekdayWorkers, holidayWo
     }
 
     if (holidays.includes(monthIndex)) {
+      const current = holidayWorkers[holidayWorkersIndex];
+      if (workTable[workTable.length - 1] === current) {
+        // 이전에 담은 사람과 같은 사람이면
+        redundantPerson.push(current);
+        // Console.print(`redundantPerson${current}`);
+        workTable.push(holidayWorkers[holidayWorkersIndex + 1]);
+        holidayWorkersIndex += 2;
+        dayIndex += 1; // 요일 증가
+        monthIndex += 1; // 일자 증가
+        continue;
+      }
       workTable.push(holidayWorkers[holidayWorkersIndex]);
       holidayWorkersIndex += 1;
       dayIndex += 1; // 요일 증가

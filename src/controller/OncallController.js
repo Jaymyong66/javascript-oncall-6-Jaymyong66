@@ -4,6 +4,9 @@ import Calendar from '../models/Calendar.js';
 import WeekdayWorkers from '../models/WeekdayWorkers.js';
 import HolidayWorkers from '../models/HolidayWorkers.js';
 import workTableGenerate from '../services/workTableGenerater.js';
+import OutputView from '../views/OutputView.js';
+import startDayToAllDays from '../utils/startDayToAllDays.js';
+import findHolidays from '../utils/\bfindHolidays.js';
 
 class OncallController {
   #Calendar;
@@ -45,7 +48,17 @@ class OncallController {
     const weekdayWorkers = this.#weekdayWorkers.getWeekdayWorkers();
     const holidayWorkers = this.#holidayWorkers.getHolidayWorkers();
     const workTable = workTableGenerate(monthAndDay, weekdayWorkers, holidayWorkers);
-    Console.print(workTable);
+    this.#printWorkerTable(workTable);
+  }
+
+  async #printWorkerTable(workTable) {
+    const [month, startDay] = this.#Calendar.getMonthAndDay();
+    const daysOfMonth = workTable.length;
+
+    const days = startDayToAllDays(startDay, daysOfMonth);
+    const holidays = findHolidays(month);
+
+    OutputView.printResult(month, days, holidays, workTable);
   }
 }
 
