@@ -22,11 +22,22 @@ class OncallController {
 
   async init() {
     await this.reInput(() => this.#inputMonthAndDay());
+    await this.reInput(() => this.#inputWorkers());
   }
 
   async #inputMonthAndDay() {
     const monthAndDay = await InputView.readMonthAndDay();
     this.#Calendar = new Calendar(monthAndDay);
+  }
+
+  async #inputWorkers() {
+    const weekdayWorkers = await InputView.readWeekdayWorkers();
+    this.#weekdayWorkers = new WeekdayWorkers(weekdayWorkers);
+    Console.print(this.#weekdayWorkers.getWeekdayWorkers());
+
+    const holidayWorkers = await InputView.readHolidayWorkers();
+    this.#holidayWorkers = new HolidayWorkers(holidayWorkers);
+    Console.print(this.#holidayWorkers.getHolidayWorkers());
   }
 }
 
