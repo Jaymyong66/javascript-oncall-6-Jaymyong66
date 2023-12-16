@@ -6,7 +6,7 @@ import HolidayWorkers from '../models/HolidayWorkers.js';
 import workTableGenerate from '../services/workTableGenerater.js';
 import OutputView from '../views/OutputView.js';
 import startDayToAllDays from '../utils/startDayToAllDays.js';
-import findHolidays from '../utils/\bfindHolidays.js';
+import findHolidays from '../utils/findHolidays.js';
 
 class OncallController {
   #Calendar;
