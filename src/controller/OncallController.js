@@ -3,6 +3,7 @@ import InputView from '../views/InputView.js';
 import Calendar from '../models/Calendar.js';
 import WeekdayWorkers from '../models/WeekdayWorkers.js';
 import HolidayWorkers from '../models/HolidayWorkers.js';
+import workTableGenerate from '../services/workTableGenerater.js';
 
 class OncallController {
   #Calendar;
@@ -23,6 +24,7 @@ class OncallController {
   async init() {
     await this.reInput(() => this.#inputMonthAndDay());
     await this.reInput(() => this.#inputWorkers());
+    await this.#makeWorkTable();
   }
 
   async #inputMonthAndDay() {
@@ -33,11 +35,17 @@ class OncallController {
   async #inputWorkers() {
     const weekdayWorkers = await InputView.readWeekdayWorkers();
     this.#weekdayWorkers = new WeekdayWorkers(weekdayWorkers);
-    Console.print(this.#weekdayWorkers.getWeekdayWorkers());
 
     const holidayWorkers = await InputView.readHolidayWorkers();
     this.#holidayWorkers = new HolidayWorkers(holidayWorkers);
-    Console.print(this.#holidayWorkers.getHolidayWorkers());
+  }
+
+  async #makeWorkTable() {
+    const monthAndDay = this.#Calendar.getMonthAndDay();
+    const weekdayWorkers = this.#weekdayWorkers.getWeekdayWorkers();
+    const holidayWorkers = this.#holidayWorkers.getHolidayWorkers();
+    const workTable = workTableGenerate(monthAndDay, weekdayWorkers, holidayWorkers);
+    Console.print(workTable);
   }
 }
 

@@ -5,7 +5,7 @@ class HolidayWorkers {
 
   constructor(holidayWorkers) {
     this.#validateWorkers(holidayWorkers);
-    this.#holidayWorkers = holidayWorkers;
+    this.#holidayWorkers = holidayWorkers.split(',').map(item => item.trim());
   }
 
   #validateWorkers(weekdayWorkers) {

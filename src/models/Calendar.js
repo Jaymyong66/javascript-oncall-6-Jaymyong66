@@ -30,7 +30,7 @@ class Calender {
   }
 
   getMonthAndDay() {
-    return `${this.#month}월 ${this.#day}요일`;
+    return [this.#month, this.#day];
   }
 }
 

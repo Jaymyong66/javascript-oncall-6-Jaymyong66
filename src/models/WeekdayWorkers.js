@@ -5,7 +5,7 @@ class WeekdayWorkers {
 
   constructor(weekdayWorkers) {
     this.#validateWeekdayWorkers(weekdayWorkers);
-    this.#weekdayWorkers = weekdayWorkers;
+    this.#weekdayWorkers = weekdayWorkers.split(',').map(item => item.trim());
   }
 
   #validateWeekdayWorkers(weekdayWorkers) {
