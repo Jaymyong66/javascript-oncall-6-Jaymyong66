@@ -1,39 +1,24 @@
-import MONTHS from '../constants/months.js';
 import DAYS from '../constants/days.js';
 import findHolidays from '../utils/findHolidays.js';
-
-function findMonthDays(selectedMonth) {
-  const selectedMonthToNumber = parseInt(selectedMonth, 10);
-  const monthInfo = Object.values(MONTHS).find(month => month[0] === selectedMonthToNumber);
-
-  if (monthInfo) {
-    return monthInfo[1];
-  }
-  return -1;
-}
+import findMonthDays from '../utils/findMonthDays.js';
 
 export default function workTableGenerate(monthAndDay, weekdayWorkers, holidayWorkers) {
   const workTable = [];
-  const selectedMonth = monthAndDay[0];
-  const startDay = monthAndDay[1];
-
-  const monthDays = findMonthDays(selectedMonth);
+  const selectedMonthDays = findMonthDays(monthAndDay[0]);
 
   const daysArray = Object.values(DAYS);
   const weekdays = daysArray.slice(0, 5);
   const weekends = daysArray.slice(5, 7);
-  const holidays = findHolidays(selectedMonth);
+  const holidays = findHolidays(monthAndDay[0]);
 
-  let dayIndex = 0; // 요일 인덱스
+  let dayIndex = daysArray.indexOf(monthAndDay[1]); // 요일 인덱스
   let monthIndex = 1; // 일자 인덱스
   let weekdayWorkersIndex = 0;
   let holidayWorkersIndex = 0;
 
-  dayIndex = daysArray.indexOf(startDay);
-
   const redundantPerson = [];
 
-  while (workTable.length < monthDays) {
+  while (workTable.length < selectedMonthDays) {
     dayIndex %= 7;
     holidayWorkersIndex %= holidayWorkers.length;
     weekdayWorkersIndex %= weekdayWorkers.length;
